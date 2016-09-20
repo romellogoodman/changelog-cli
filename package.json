@@ -1,0 +1,25 @@
+{
+  "name": "changelog-cli",
+  "version": "1.0.0",
+  "description": "A cli tool for changeloging and versioning.",
+  "main": "index.js",
+  "bin": {
+    "changelog": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Romello Goodman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/romellogood/changelog-cli/issues"
+  },
+  "homepage": "https://github.com/romellogood/changelog-cli#readme",
+  "dependencies": {
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.9.0",
+    "moment": "^2.15.0",
+    "semver": "^5.3.0"
+  }
+}
