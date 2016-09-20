@@ -1,6 +1,6 @@
 # Changelog Cli
 
-A command-line tool for writing changelogs (changelod.md) and incrementing versions in package.json
+A command-line tool for writing changelogs (changelog.md) and incrementing versions in package.json
 
 This module uses the module [semver](https://www.npmjs.com/package/semver) to follow the idea [semver](http://semver.org/).
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env node --harmony
 var co = require('co');
+var colors = require('colors');
 var fs = require('fs');
 var moment = require('moment');
 var path = require('path');
@@ -30,7 +31,6 @@ function checkType (type) {
   return type.toLowerCase();
 }
 
-
 program
 .arguments('<type>')
 .option('-t, --tag', 'Commit the change and tag the new version in git.')
@@ -44,7 +44,7 @@ program
     try {
       packageJSON = fs.readFileSync(packageJSONPath, 'UTF-8');
     } catch (err) {
-      console.log(`Exiting: There was an error reading package.json at: ${packageJSONPath}.`)
+      console.log(`${' EXITING '.redBG.bold.white} There was an error reading package.json at: ${packageJSONPath}.`)
       process.exit(1);
     }
 
@@ -56,12 +56,12 @@ program
       var oldVersion = parsedJSON.version;
 
       parsedJSON.version = semver.inc(parsedJSON.version, verifiedType);
-      console.log(`Message: Changing from ${oldVersion} to ${parsedJSON.version}.`);
+      console.log(`Changing from version ${oldVersion} to ${parsedJSON.version}.`);
 
       var stringJSON = JSON.stringify(parsedJSON, null, 2);
 
       fs.writeFileSync('package.json', stringJSON);
-      console.log('Sucess: Wrote package.json.');
+      console.log(`${' SUCCESS '.greenBG.bold.white} Wrote package.json.`);
 
       try {
         var changelogFile = 'CHANGELOG.md';
@@ -70,23 +70,23 @@ program
         packageJSON = fs.readFileSync(changelogPath, 'UTF-8');
       } catch (err) {
         if (err.code === "ENOENT") {
-          console.log('Message: CHANGELOG.md does not exist. Writing a new one.');
+          console.log('CHANGELOG.md does not exist. Writing a new one.');
           fs.writeFileSync(changelogFile, '');
-          console.log('Sucess: Wrote a fresh changelog.');
+          console.log(`${' SUCCESS '.greenBG.bold.white} Wrote a fresh changelog.`);
         } else {
-          console.log(`Exiting: There was an error reading the changelog at: ${changelogPath}.`);
+          console.log(`${' EXITING '.redBG.bold.white} There was an error reading the changelog at: ${changelogPath}.`);
           process.exit(1);
         }
       }
 
       co(function *() {
         // Update the changelog
-        var message = yield prompt('Prompt: Write a message for the changelog.\n');
+        var message = yield prompt('Write a message for the changelog.\n');
         var date = moment().format('MMMM Do YYYY');
 
         changeLogMessage = `\n### ${parsedJSON.version} (${date})\n* ${message}\n`;
         fs.appendFileSync(changelogFile, changeLogMessage);
-        console.log('Sucess: Updated the changelog.');
+        console.log(`${' SUCCESS '.greenBG.bold.white} Updated the changelog.`);
 
         // TODO: Commit change & Tag in git
         // if (program.tag) {
@@ -98,7 +98,7 @@ program
       });
     }
   } else {
-    console.log(`Exiting: ${type} is not a supported type.`);
+    console.log(`${' EXITING '.redBG.bold.white} ${type} is not a supported type.`);
   }
 })
 .parse(process.argv);
